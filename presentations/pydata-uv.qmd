@@ -1,0 +1,28 @@
+---
+title: "Managing Python Virtual Environments with UV"
+subtitle: "PyData Northern Utah | ASC Innovation Lab"
+author: Kaden Buffaloe and Marc Dotson
+title-slide-attributes:
+  data-background-color: "#0F2439"
+format: 
+  revealjs:
+    theme: slides.scss     # Modified slides theme
+    code-copy: true        # Show code blocks copy button
+    slide-number: c/t      # Numbered slides current/total
+    embed-resources: true  # Render to a single HTML file
+execute:
+  eval: false
+  echo: true
+jupyter: python3
+---
+
+# Python Environments {background-color="#288DC2"}
+
+
+
+
+# Walkthrough {background-color="#288DC2"}
+
+
+
+
