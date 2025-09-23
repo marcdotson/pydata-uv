@@ -1,7 +1,7 @@
 ---
 title: "Managing Python Virtual Environments with UV"
-subtitle: "PyData Northern Utah | ASC Innovation Lab"
-author: Kaden Buffaloe and Marc Dotson
+subtitle: "github.com/marcdotson/pydata-uv"
+author: "Kaden Buffaloe and Marc Dotson"
 title-slide-attributes:
   data-background-color: "#0F2439"
 format: 
@@ -16,13 +16,53 @@ execute:
 jupyter: python3
 ---
 
+## 
+
+:::: {.columns .v-center}
+
+::: {.column width="40%"}
+![](../figures/pydata.png){fig-align="center"}
+:::
+
+::: {.column width="60%"}
+::: {.incremental}
+- Club and professional forum to learn/retool
+- Global network of chapters
+- Workshops vary from beginning to advanced
+- Polyglot (Python, Julia, R, etc.)
+- We follow the [PyData Code of Conduct](https://pydata.org/code-of-conduct/)
+- Join at [meetup.com/pydata-northern-utah](https://www.meetup.com/pydata-northern-utah/)
+:::
+:::
+
+::::
+
 # Python Environments {background-color="#288DC2"}
 
-
-
+I recommend using [uv](https://docs.astral.sh/uv/), a single unified tool for installing and managing both Python versions and project environments
 
 # Walkthrough {background-color="#288DC2"}
 
+## 
 
+Get started by [installing uv](https://docs.astral.sh/uv/getting-started/installation/) via the command line
 
+## 
+
+::: {.callout-note title="The Command Line"}
+If using the command line (i.e., terminal or shell) is new to you, be patient, take your time, and follow instructions from a trusted source closely. A few things that might help:
+
+- The command line is the programming interface into your OS itself. You don't have to know everything about it to follow instructions.
+- Instructions can be different based on the *type* of command line. If you're on a Mac that's running macOS Catalina 10.15.7 or later, the terminal is Zsh. If you're using Linux, the shell is Bash (and you probably already know that). And if you're using Windows you're working with PowerShell.
+:::
+
+## 
+
+Use more at [the data stack training](https://github.com/marcdotson/data-stack)
+
+# {background-color="#0F2439"}
+
+:::: {.columns .v-center}
+![](../figures/pydata-northern-utah-qr.png){fig-align="center"}
+::::
 
