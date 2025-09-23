@@ -1,5 +1,8 @@
 # Python
 .venv
+.python-version
+pyproject.toml
+uv.lock
 
 # R
 .Rproj.user
