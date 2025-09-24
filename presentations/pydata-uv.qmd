@@ -11,7 +11,7 @@ format:
     slide-number: c/t      # Numbered slides current/total
     embed-resources: true  # Render to a single HTML file
 execute:
-  eval: false
+  eval: true
   echo: true
 jupyter: python3
 ---
@@ -41,7 +41,60 @@ jupyter: python3
 
 I recommend using [uv](https://docs.astral.sh/uv/), a single unified tool for installing and managing both Python versions and project environments
 
-# Walkthrough {background-color="#288DC2"}
+
+## Create an Environment: Traditional vs `uv`
+
+:::: {.columns}
+
+::: {.fragment .column width="50%"}
+### Traditional Approach 
+
+1. Manage Python version using `pyenv`  
+```bash
+pyenv local 3.11.7
+```
+2. Create a Virtual Environment  
+```bash
+python -m venv venv
+```
+3. Activate the Environment
+```bash
+.\venv\Scripts\activate
+```
+4. Install Packages Manually
+```bash
+pip install requests pandas
+```
+5. Freeze Dependencies
+```bash
+pip freeze > requirements.txt
+```
+
+:::
+::: {.fragment .column width="50%"}
+### Using `uv`
+1. Initialize a project
+
+  ```bash
+  uv init
+  ```
+2. Install & pin Python version (optional)
+
+```bash
+uv python install 3.11
+uv python pin 3.11
+```
+3. Add packages to the project
+
+```bash
+uv add requests pandas
+```
+- `uv` tracks dependencies in a `uv.lock` file and automatically creates the `.venv environment`—no requirements.txt needed.
+:::
+::::
+
+
+# Walkthrough- Let's See It In Action {background-color="#288DC2"}
 
 ##  Installation
 
@@ -55,38 +108,34 @@ If using the command line (i.e., terminal or shell) is new to you, be patient, t
 - Instructions can be different based on the *type* of command line. If you're on a Mac that's running macOS Catalina 10.15.7 or later, the terminal is Zsh. If you're using Linux, the shell is Bash (and you probably already know that). And if you're using Windows you're working with PowerShell.
 :::
 
-## Download Latest Version of `uv`
--   **On macOS:** Press `Cmd + Space`, type **Terminal**, and press Enter.
--   **On Windows:** Open the Start Menu, type **PowerShell**, and press Enter.
+## Download the Latest Version of `uv`
 
-
-### macOS and Linux
-Use `curl` to download and execute:
+#### macOS and Linux
+- Press `Cmd + Space`, type **Terminal**, and enter the following:
 ```bash
 # Install the latest version of uv
 curl -LsSf https://astral.sh/uv/install.sh | sh
 ```
 
-### Windows
-Use `PowerShell` to download and execute:
+#### Windows
+- Open the Start Menu, type **PowerShell**, press Enter, and copy the following:
 ```powershell
 powershell -ExecutionPolicy ByPass -c "irm https://astral.sh/uv/install.ps1 | iex"
 ```
-### However, `pip` can also be used:
-```powershell
-pip install uv
-```
+
 ::: {.callout-tip title="Verify Installation"}
-- You can simply run `uv` in the command line to verify it has been installed. 
+- You can simply run `uv -- version` in the command line to verify it has been installed. 
 :::
+
 
 ## Managing Python Versions 
 
-Once you have uv installed, it’s easy to install and manage Python versions. From the command line you can run:
+Once you have uv installed, it’s easy to install and manage Python versions, no need for `pyenv`. From the command line you can run:
 
 ```bash
-#Install the latest stable release of Python.
-uv python install
+#Install the latest stable release of Python or a specific version.
+uv python install 
+uv python install 3.13
 
 #View available Python versions to install.
 uv python list
@@ -95,7 +144,8 @@ uv python list
 uv python find
 
 #Pin the current project to use a specific Python version.
-uv python pin
+uv python pin 
+uv python pin 3.13.7
 
 #Uninstall a Python version.
 uv python uninstall
@@ -126,22 +176,160 @@ cd C:\Users\YourUser\Documents\my-python-project-folder
 
 ## Create a Project Environment
 
-**Run `uv init`** to initialize a project environment. This creates a `pyproject.toml` file with metadata about the project and a hidden `.python-version` file that specifies the default version of Python for the project. (It also creates `main.py` and `README.md` files that you can use or delete.)
+- **Run `uv init`** to initialize a project environment. 
+  ```bash
+  uv init
+  ```
+  - This creates a `pyproject.toml` file with metadata about the project and a hidden `.python-version` file that specifies the default version of Python for the project. 
+  - It also creates `main.py` and `README.md` files that you can use or delete.
 
-```bash
-uv init
-```
+
 :::: {.columns}
-![](../figures/file-structure-example.png){fig-align="center"}
+::: {.fragment}
+
+::: {.column width="50%"}
+**Before** Running `uv init`
+```text
+my-python-project
+├── data
+├── figures
+└── presentations
+
+
+
+
+
+
+```
+:::
+::: {.column width="50%"}
+
+**After** Running `uv init`
+```text
+my-python-project
+├── data
+├── figures
+├── presentations
+├── .gitignore
+├── .python-version
+├── main.py
+├── pyproject.toml
+└── README.md
+```
+:::
+:::
 ::::
 
+## Add Packages
+With the project environment initialized, you can now install libraries. For example, to install the `Pandas` library, run:
+```bash 
+uv add pandas
+```
+- This installs `Pandas`, and any dependencies, and creates both a `uv.lock` file that keeps track of the versions of the libraries you’ve installed and a hidden `.venv` reproducible environment folder that serves as the project library.
+- Whenever you install new libraries, the `uv.lock` file is automatically updated.
+
+
+:::: {.columns}
+::: {.fragment}
+
+::: {.column width="50%"}
+**Before** Running `uv add <package>`
+```text
+my-python-project
+├── data
+├── figures
+├── presentations
+├── .gitignore
+├── .python-version
+├── main.py
+├── pyproject.toml
+└── README.md
 
 
 
+```
+:::
+::: {.column width="50%"}
+
+**After** Running `uv add <package>`
+```text
+my-python-project
+├── .venv
+├── data
+├── figures
+├── presentations
+├── .gitignore
+├── .python-version
+├── main.py
+├── pyproject.toml
+├── README.md
+└── uv.lock
+```
+:::
+:::
+::::
+
+## Run Code In Your Environment
+
+With packages now installed `uv` can be used to run code in your environment. No need to activate/deactivate your venv — `uv run` does it. If the `.venv` somehow gets deleted `uv` will check prior to running and re-initailize it.
+
+```bash
+uv run main.py
+```
+```{python}
+#| echo: true
+#| output-location: slide
+#| fig-align: center # Ensures the figure is horizontally centered
+
+import pandas as pd
+import matplotlib.pyplot as plt
+
+# --- USU Color Scheme ---
+usu_colors = ['#003366','#9D9D9D','#6699CC', '#0055A4' ]
+
+# Load customer data and establish region counts
+customer_data = pd.read_csv('../data/customer_data.csv')
+region_counts = customer_data['region'].value_counts()
+
+#Plot regional customer distributions
+fig, ax = plt.subplots(figsize=(8, 8)) 
+region_counts.plot.pie(
+    ax=ax,
+    autopct='%1.1f%%',
+    startangle=90,
+    colors=usu_colors[:len(region_counts)])
+
+ax.set_title('Customer Region Distribution', fontsize=16, color='#003366', fontweight='bold')
+
+ax.set_ylabel('')
+plt.show()
+```
+
+## Other Useful Features
+`uv` offers several powerful commands to streamline project management and collaboration.
+
+* **Auto-Install on Run**
+If you're starting with an existing project, `uv run` automatically installs any missing libraries from the `uv.lock` file before executing your code.
+
+```bash
+# No need to run 'uv sync' first!
+uv run python your_script.py
+```
+
+* **Export for Compatibility**
+To share your project with someone using a different tool (like `pip`), you can export your environment's dependencies into standard formats.
+* For a `requirements.txt` file:
+```bash
+uv export --format requirements.txt
+```
+* For a `pylock.toml` file:
+```bash
+uv export -o pylock.toml
+```
 ##
-Use more at [the data stack training](https://github.com/marcdotson/data-stack)
+See more in depth use set up at [the data stack training](https://github.com/marcdotson/data-stack)
 
-# {background-color="#0F2439"}
+# Thank You!{background-color="#0F2439"}
 
 :::: {.columns .v-center}
 ![](../figures/pydata-northern-utah-qr.png){fig-align="center"}
