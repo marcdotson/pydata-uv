@@ -1,7 +1,7 @@
 ---
 title: "Managing Python Virtual Environments with UV"
-subtitle: "github.com/marcdotson/pydata-uv"
-author: "Kaden Buffaloe and Marc Dotson"
+subtitle: "PyData Northern Utah | ASC Innovation Lab"
+author: "Marc Dotson and Kaden Buffaloe"
 title-slide-attributes:
   data-background-color: "#0F2439"
 format: 
@@ -10,6 +10,7 @@ format:
     code-copy: true        # Show code blocks copy button
     slide-number: c/t      # Numbered slides current/total
     embed-resources: true  # Render to a single HTML file
+    footer: "[github.com/marcdotson/pydata-uv](https://github.com/marcdotson/pydata-uv)"
 execute:
   eval: true
   echo: true
@@ -37,191 +38,160 @@ jupyter: python3
 
 ::::
 
-# Python Environments {background-color="#288DC2"}
+# Background {background-color="#288DC2"}
 
-I recommend using [uv](https://docs.astral.sh/uv/), a single unified tool for installing and managing both Python versions and project environments
+## 
 
+![](../figures/xkcd_python-env.png){fig-align="center"}
 
-## Create an Environment: Traditional vs `uv`
+## What is a Python environment?
 
-:::: {.columns}
+A Python environment is composed of the **Python version** and **library versions** (including dependencies)
 
-::: {.fragment .column width="50%"}
-### Traditional Approach 
-
-1. Manage Python version using `pyenv`  
-```bash
-pyenv local 3.11.7
-```
-2. Create a Virtual Environment  
-```bash
-python -m venv venv
-```
-3. Activate the Environment
-```bash
-.\venv\Scripts\activate
-```
-4. Install Packages Manually
-```bash
-pip install requests pandas
-```
-5. Freeze Dependencies
-```bash
-pip freeze > requirements.txt
-```
-
-:::
-::: {.fragment .column width="50%"}
-### Using `uv`
-1. Initialize a project
-
-  ```bash
-  uv init
-  ```
-2. Install & pin Python version (optional)
-
-```bash
-uv python install 3.11
-uv python pin 3.11
-```
-3. Add packages to the project
-
-```bash
-uv add requests pandas
-```
-- `uv` tracks dependencies in a `uv.lock` file and automatically creates the `.venv environment`—no requirements.txt needed.
-:::
-::::
-
-
-# Walkthrough- Let's See It In Action {background-color="#288DC2"}
-
-##  Installation
-
-Get started by [installing uv](https://docs.astral.sh/uv/getting-started/installation/) via the command line
-
-
-::: {.callout-note title="The Command Line"}
-If using the command line (i.e., terminal or shell) is new to you, be patient, take your time, and follow instructions from a trusted source closely. A few things that might help:
-
-- The command line is the programming interface into your OS itself. You don't have to know everything about it to follow instructions.
-- Instructions can be different based on the *type* of command line. If you're on a Mac that's running macOS Catalina 10.15.7 or later, the terminal is Zsh. If you're using Linux, the shell is Bash (and you probably already know that). And if you're using Windows you're working with PowerShell.
+::: {.fragment}
+![](../figures/env-01.png){fig-align="center"}
 :::
 
-## Download the Latest Version of `uv`
+## Why manage your Python environments?
 
-#### macOS and Linux
-- Press `Cmd + Space`, type **Terminal**, and enter the following:
+It is not uncommon for different projects to require **different Python versions** and **different library versions**
+
+::: {.fragment}
+![](../figures/env-02.png){fig-align="center"}
+:::
+
+## Why manage your Python environments? {visibility="uncounted"}
+
+It is not uncommon for different projects to require **different Python versions** and **different library versions**
+
+![](../figures/env-03.png){fig-align="center"}
+
+# Welcome to "dependency hell"
+
+## What makes a Python environment virtual?
+
+A Python **virtual environment** (a.k.a., a **project environment**) is a self-contained, project-specific environment
+
+::: {.fragment}
+![](../figures/env-04.png){fig-align="center"}
+:::
+
+## My code works on my machine, so what?
+
+Project environments can be **reproduced on another machine** by you (including future you) or someone else
+
+::: {.incremental}
+1. Code
+2. Code, Python version, and library versions
+3. Code, Python version, library versions, and OS
+:::
+
+## My code works on my machine, so what? {visibility="uncounted"}
+
+Project environments can be **reproduced on another machine** by you (including future you) or someone else
+
+1. Code
+2. Code, Python version, and library versions
+3. ~~Code, Python version, library versions, and OS~~
+
+If you need to reproduce something about your machine beyond your code, Python version, and library versions, you'll want to use a **container**
+
+## Why `uv`?
+
+`uv` is an **extremely fast** Python package and project manager, written in Rust
+
+::: {.incremental}
+- A single tool to replace `conda`, `pip`, `poetry`, `pyenv`, `virtualenv`, etc.
+- Installable via the command line without Rust or Python
+- Supports macOS, Linux, and Windows
+- Easy to integrate with or transfer from existing tools
+:::
+
+# Walkthrough {background-color="#288DC2"}
+
+## Install `uv`
+
+Get started by [installing uv](https://docs.astral.sh/uv/getting-started/installation/) via the **command line** (i.e., the programming interface into your OS itself)
+
+**macOS and Linux via Terminal**
+
 ```bash
-# Install the latest version of uv
 curl -LsSf https://astral.sh/uv/install.sh | sh
 ```
 
-#### Windows
-- Open the Start Menu, type **PowerShell**, press Enter, and copy the following:
+**Windows via PowerShell**
+
 ```powershell
 powershell -ExecutionPolicy ByPass -c "irm https://astral.sh/uv/install.ps1 | iex"
 ```
 
-::: {.callout-tip title="Verify Installation"}
-- You can simply run `uv -- version` in the command line to verify it has been installed. 
+Run `uv` in the command line to verify it has been installed
+
+## Install and manage Python versions
+
+Once you have `uv` installed, it’s easy to install and manage Python different versions from the command line:
+
+::: {.incremental}
+- Install the latest stable Python release with `uv python install`
+- Install a specific Python version, like `uv python install 3.13.4`
+- View Python versions you can install with `uv python list`
+- Find which Python versions you have installed with `uv python find`
+- Uninstall a specific Python version, like `uv python uninstall 3.13.4`
 :::
 
+::: {.fragment}
+There's lots more `uv` can do to [manage Python versions](https://docs.astral.sh/uv/guides/install-python/)
+:::
 
-## Managing Python Versions 
+## Create or navigate to a project directory
 
-Once you have uv installed, it’s easy to install and manage Python versions, no need for `pyenv`. From the command line you can run:
+Using the command line or a code editor (i.e., [VS Code](https://code.visualstudio.com), [Cursor](https://cursor.com), [Positron](https://posit.co/products/ide/positron/), etc.), create or navigate to a project directory, preferable one that is **not being synced to the cloud** via OneDrive, iCloud, etc.
 
-```bash
-#Install the latest stable release of Python or a specific version.
-uv python install 
-uv python install 3.13
-
-#View available Python versions to install.
-uv python list
-
-#Find an installed Python version.
-uv python find
-
-#Pin the current project to use a specific Python version.
-uv python pin 
-uv python pin 3.13.7
-
-#Uninstall a Python version.
-uv python uninstall
-
-```
-
-## Navigate to a Projecet Directory
-
-Using the command line or using a code editor or IDE like [Positron](https://github.com/marcdotson/data-stack?tab=readme-ov-file#sec-positron), locate or create the directory you would like to use. This working directory **should not** be in a location on your local machine **that is being synced to the cloud** via OneDrive, iCloud, etc.
-
-### macOS and Linux
+**macOS and Linux via Terminal**
 
 ```bash
-# Replace with the actual path to your folder
-cd ~/Documents/my-python-project-folder
+cd ~/Desktop
+mkdir uv-practice
+cd uv-practice
 ```
 
-### Windows
+**Windows via PowerShell**
 
 ```powershell
-# Replace with the actual path to your folder
-cd C:\Users\YourUser\Documents\my-python-project-folder
+cd Desktop
+mkdir uv-practice
+cd uv-practice
 ```
-:::{.callout-tip title="**Pro Tip**"}
 
-* Dragging a folder from your file explorer and dropping it into the terminal window will paste its full path automatically!
-:::
+Dragging a folder from your finder/file explorer and dropping it into the terminal/shell will paste its file path
 
-## Create a Project Environment
+## Initialize a project environment
 
-- **Run `uv init`** to initialize a project environment. 
-  ```bash
-  uv init
-  ```
-  - This creates a `pyproject.toml` file with metadata about the project and a hidden `.python-version` file that specifies the default version of Python for the project. 
-  - It also creates `main.py` and `README.md` files that you can use or delete.
-
+Run `uv init` to initialize a project environment
 
 :::: {.columns}
-::: {.fragment}
 
-::: {.column width="50%"}
-**Before** Running `uv init`
+::: {.column .fragment width="50%"}
 ```text
-my-python-project
-├── data
-├── figures
-└── presentations
-
-
-
-
-
-
-```
-:::
-::: {.column width="50%"}
-
-**After** Running `uv init`
-```text
-my-python-project
-├── data
-├── figures
-├── presentations
-├── .gitignore
+uv-practice
 ├── .python-version
 ├── main.py
 ├── pyproject.toml
 └── README.md
 ```
 :::
+
+::: {.column .fragment width="50%"}
+- This creates a `pyproject.toml` file with metadata about the project and a hidden `.python-version` file that specifies the default version of Python for the project. 
+- It also creates `main.py` and `README.md` files that you can use or delete.
 :::
+
 ::::
 
-## Add Packages
+## Install libraries
+
 With the project environment initialized, you can now install libraries. For example, to install the `Pandas` library, run:
+
 ```bash 
 uv add pandas
 ```
