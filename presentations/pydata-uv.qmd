@@ -12,7 +12,7 @@ format:
     embed-resources: true  # Render to a single HTML file
     footer: "[github.com/marcdotson/pydata-uv](https://github.com/marcdotson/pydata-uv)"
 execute:
-  eval: true
+  eval: false
   echo: true
 jupyter: python3
 ---
@@ -22,7 +22,7 @@ jupyter: python3
 :::: {.columns .v-center}
 
 ::: {.column width="40%"}
-![](../figures/pydata.png){fig-align="center"}
+![](../figures/pydata.png){fig-align="center" width="80%"}
 :::
 
 ::: {.column width="60%"}
@@ -193,7 +193,7 @@ uv-practice
 
 ## Install libraries
 
-With the project environment initialized, we can now install libraries, like `uv add polars`, which install the Polars library along with any dependecies, along with
+With the project environment initialized, we can now install libraries, like `uv add polars`, which will install the Polars library along with any dependecies, along with
 
 :::: {.columns}
 
@@ -217,9 +217,31 @@ uv-practice
 
 ::::
 
+## And you're ready to code
+
+That's it! You now have a project environment managed by `uv` and can go ahead and run Python code
+
+For example, using data from [github.com/marcdotson/pydata-uv](https://github.com/marcdotson/pydata-uv), replace the code in `main.py` with the following
+
+```{python}
+import os
+import polars as pl
+
+customer_data = pl.read_csv(os.path.join('data', 'customer_data.csv'))
+
+count_df = (customer_data
+  .group_by(pl.col(['region', 'college_degree']))
+  .agg(n = pl.len())
+)
+
+print(count_df)
+```
+
+Then run `uv run python main.py` from the command line
+
 ## Other details
 
-That's it! You now have a project environment managed by `uv` and can go ahead and use your favorite code editor to run Python code
+You'll probably be using a code editor (i.e., [VS Code](https://code.visualstudio.com), [Cursor](https://cursor.com), [Positron](https://posit.co/products/ide/positron/), etc.), and you'll have to make sure you open the project directory (i.e., `uv-practice`) in the code editor and make sure the code editor **activates the project environment**
 
 ::: {.incremental}
 - Whenever you install new libraries using `uv add <library>`, the `uv.lock` file is automatically updated
@@ -229,7 +251,7 @@ That's it! You now have a project environment managed by `uv` and can go ahead a
 :::
 
 ::: {.fragment}
-And there's a *lot* more thatn [uv](https://docs.astral.sh/uv/) can do
+There's a *lot* more that [uv](https://docs.astral.sh/uv/) can do
 :::
 
 # {background-color="#0F2439"}
