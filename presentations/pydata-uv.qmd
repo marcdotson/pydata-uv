@@ -194,6 +194,7 @@ uv-practice
 ## Install libraries
 
 With the project environment initialized, we can now install libraries, like `uv add polars`, which will install the Polars library along with any dependecies, along with
+With the project environment initialized, we can now install libraries, like `uv add polars`, which will install the Polars library along with any dependecies, along with
 
 :::: {.columns}
 
