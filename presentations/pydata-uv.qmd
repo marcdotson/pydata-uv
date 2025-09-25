@@ -49,7 +49,7 @@ jupyter: python3
 A Python environment is composed of the **Python version** and **library versions** (including dependencies)
 
 ::: {.fragment}
-![](../figures/env-01.png){fig-align="center"}
+![](../figures/env-01.png){fig-align="center" width="65%"}
 :::
 
 ## Why manage your Python environments?
@@ -57,14 +57,14 @@ A Python environment is composed of the **Python version** and **library version
 It is not uncommon for different projects to require **different Python versions** and **different library versions**
 
 ::: {.fragment}
-![](../figures/env-02.png){fig-align="center"}
+![](../figures/env-02.png){fig-align="center" width="65%"}
 :::
 
 ## Why manage your Python environments? {visibility="uncounted"}
 
 It is not uncommon for different projects to require **different Python versions** and **different library versions**
 
-![](../figures/env-03.png){fig-align="center"}
+![](../figures/env-03.png){fig-align="center" width="65%"}
 
 # Welcome to "dependency hell"
 
@@ -73,7 +73,7 @@ It is not uncommon for different projects to require **different Python versions
 A Python **virtual environment** (a.k.a., a **project environment**) is a self-contained, project-specific environment
 
 ::: {.fragment}
-![](../figures/env-04.png){fig-align="center"}
+![](../figures/env-04.png){fig-align="center" width="65%"}
 :::
 
 ## My code works on my machine, so what?
@@ -111,7 +111,7 @@ If you need to reproduce something about your machine beyond your code, Python v
 
 ## Install `uv`
 
-Get started by [installing uv](https://docs.astral.sh/uv/getting-started/installation/) via the **command line** (i.e., the programming interface into your OS itself)
+Get started by [installing `uv`](https://docs.astral.sh/uv/getting-started/installation/) via the **command line** (i.e., the programming interface into your OS itself)
 
 **macOS and Linux via Terminal**
 
@@ -125,11 +125,11 @@ curl -LsSf https://astral.sh/uv/install.sh | sh
 powershell -ExecutionPolicy ByPass -c "irm https://astral.sh/uv/install.ps1 | iex"
 ```
 
-Run `uv` in the command line to verify it has been installed
+Restart your command line and run `uv` to verify it has been installed
 
 ## Install and manage Python versions
 
-Once you have `uv` installed, it’s easy to install and manage Python different versions from the command line:
+Once you have `uv` installed, it’s easy to install and manage Python different versions from the command line
 
 ::: {.incremental}
 - Install the latest stable Python release with `uv python install`
@@ -145,7 +145,7 @@ There's lots more `uv` can do to [manage Python versions](https://docs.astral.sh
 
 ## Create or navigate to a project directory
 
-Using the command line or a code editor (i.e., [VS Code](https://code.visualstudio.com), [Cursor](https://cursor.com), [Positron](https://posit.co/products/ide/positron/), etc.), create or navigate to a project directory, preferable one that is **not being synced to the cloud** via OneDrive, iCloud, etc.
+Using the command line or a code editor (i.e., [VS Code](https://code.visualstudio.com), [Cursor](https://cursor.com), [Positron](https://posit.co/products/ide/positron/), etc.), create or navigate to a project directory, preferably one that is **not being synced to the cloud** via OneDrive, iCloud, etc.
 
 **macOS and Linux via Terminal**
 
@@ -167,67 +167,45 @@ Dragging a folder from your finder/file explorer and dropping it into the termin
 
 ## Initialize a project environment
 
-Run `uv init` to initialize a project environment
+Run `uv init` to **initialize a project environment** in your project directory and create a `pyproject.toml` file, the Python standard for defining configurations for a project, along with
 
 :::: {.columns}
 
-::: {.column .fragment width="50%"}
+::: {.column width="60%"}
+- `.gitignore` is a hidden file for turning your project directory into a Git repository
+- `.python-version` is a hidden file that specifies the version of Python for the project
+- `main.py` is a Python script you can use or delete
+- `README.md` is a markdown file that is also used in Git repositories that you can use or delete
+:::
+
+::: {.column width="40%"}
 ```text
 uv-practice
+├── .gitignore
 ├── .python-version
 ├── main.py
 ├── pyproject.toml
 └── README.md
 ```
-:::
-
-::: {.column .fragment width="50%"}
-- This creates a `pyproject.toml` file with metadata about the project and a hidden `.python-version` file that specifies the default version of Python for the project. 
-- It also creates `main.py` and `README.md` files that you can use or delete.
 :::
 
 ::::
 
 ## Install libraries
 
-With the project environment initialized, you can now install libraries. For example, to install the `Pandas` library, run:
-
-```bash 
-uv add pandas
-```
-- This installs `Pandas`, and any dependencies, and creates both a `uv.lock` file that keeps track of the versions of the libraries you’ve installed and a hidden `.venv` reproducible environment folder that serves as the project library.
-- Whenever you install new libraries, the `uv.lock` file is automatically updated.
-
+With the project environment initialized, we can now install libraries, like `uv add polars`, which install the Polars library along with any dependecies, along with
 
 :::: {.columns}
-::: {.fragment}
 
-::: {.column width="50%"}
-**Before** Running `uv add <package>`
-```text
-my-python-project
-├── data
-├── figures
-├── presentations
-├── .gitignore
-├── .python-version
-├── main.py
-├── pyproject.toml
-└── README.md
-
-
-
-```
+::: {.column width="60%"}
+- `uv.lock` file that keeps track of the library versions you've installed
+- `.venv` a hidden folder that contains the libraries for the project environment
 :::
-::: {.column width="50%"}
 
-**After** Running `uv add <package>`
+::: {.column width="40%"}
 ```text
-my-python-project
+uv-practice
 ├── .venv
-├── data
-├── figures
-├── presentations
 ├── .gitignore
 ├── .python-version
 ├── main.py
@@ -236,71 +214,25 @@ my-python-project
 └── uv.lock
 ```
 :::
+
+::::
+
+## Other details
+
+That's it! You now have a project environment managed by `uv` and can go ahead and use your favorite code editor to run Python code
+
+::: {.incremental}
+- Whenever you install new libraries using `uv add <library>`, the `uv.lock` file is automatically updated
+- If you're starting with an existing project environment, `uv run` automatically installs any missing libraries from the `uv.lock` file
+- If you need to share your project enviornment in the form of a `requirements.txt`, run `uv export --format requirements.txt`
+- If you need to share your project enviornment in the form of a `pylock.toml`, run `uv export -o pylock.toml`
 :::
-::::
 
-## Run Code In Your Environment
+::: {.fragment}
+And there's a *lot* more thatn [uv](https://docs.astral.sh/uv/) can do
+:::
 
-With packages now installed `uv` can be used to run code in your environment. No need to activate/deactivate your venv — `uv run` does it. If the `.venv` somehow gets deleted `uv` will check prior to running and re-initailize it.
+# {background-color="#0F2439"}
 
-```bash
-uv run main.py
-```
-```{python}
-#| echo: true
-#| output-location: slide
-#| fig-align: center # Ensures the figure is horizontally centered
+![](../figures/pydata-northern-utah.png){fig-align="center"}
 
-import pandas as pd
-import matplotlib.pyplot as plt
-
-# --- USU Color Scheme ---
-usu_colors = ['#003366','#9D9D9D','#6699CC', '#0055A4' ]
-
-# Load customer data and establish region counts
-customer_data = pd.read_csv('../data/customer_data.csv')
-region_counts = customer_data['region'].value_counts()
-
-#Plot regional customer distributions
-fig, ax = plt.subplots(figsize=(8, 8)) 
-region_counts.plot.pie(
-    ax=ax,
-    autopct='%1.1f%%',
-    startangle=90,
-    colors=usu_colors[:len(region_counts)])
-
-ax.set_title('Customer Region Distribution', fontsize=16, color='#003366', fontweight='bold')
-
-ax.set_ylabel('')
-plt.show()
-```
-
-## Other Useful Features
-`uv` offers several powerful commands to streamline project management and collaboration.
-
-* **Auto-Install on Run**
-If you're starting with an existing project, `uv run` automatically installs any missing libraries from the `uv.lock` file before executing your code.
-
-```bash
-# No need to run 'uv sync' first!
-uv run python your_script.py
-```
-
-* **Export for Compatibility**
-To share your project with someone using a different tool (like `pip`), you can export your environment's dependencies into standard formats.
-* For a `requirements.txt` file:
-```bash
-uv export --format requirements.txt
-```
-* For a `pylock.toml` file:
-```bash
-uv export -o pylock.toml
-```
-##
-See more in depth use set up at [the data stack training](https://github.com/marcdotson/data-stack)
-
-# Thank You!{background-color="#0F2439"}
-
-:::: {.columns .v-center}
-![](../figures/pydata-northern-utah-qr.png){fig-align="center"}
-::::
