@@ -109,6 +109,10 @@ If you need to reproduce something about your machine beyond your code, Python v
 
 # Walkthrough {background-color="#288DC2"}
 
+## 
+
+![](../figures/github-repo.png){fig-align="center"}
+
 ## Install `uv`
 
 Get started by [installing `uv`](https://docs.astral.sh/uv/getting-started/installation/) via the **command line** (i.e., the programming interface into your OS itself)
